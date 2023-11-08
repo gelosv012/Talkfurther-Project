@@ -64,18 +64,18 @@
             <h3 class="form-heading text-xl text-center">Lead Information Form</h3>
 
             <div class="form-content">
-                <form action="https://hooks.zapier.com/hooks/catch/16991861/3zift0e/" method="POST" class="form">
+                <form class="form" id="leadForm">
                     <div class="input-box">
-                        <label for="">Full Name</label>
-                        <input type="text" placeholder="Enter Full Name">
+                        <label>Full Name</label>
+                        <input type="text" placeholder="Enter Full Name" id="name" required>
                     </div>
                     <div class="input-box">
-                        <label for="">Email</label>
-                        <input type="email" placeholder="Enter Email" required>
+                        <label>Email</label>
+                        <input type="email" placeholder="Enter Email" id="email" required>
                     </div>
                     <div class="input-box">
-                        <label for="">Phone</label>
-                        <input type="tel" placeholder="Enter Phone Number" required>
+                        <label>Phone</label>
+                        <input type="tel" placeholder="Enter Phone Number" id="phone" required>
                     </div>
 
                     <input type="submit" value="Submit" class="form-btn">
@@ -88,7 +88,39 @@
 
     </section>
 
-    <script src="myjs.js"></script>
-    
+    <script>
+        document.getElementById("leadForm").addEventListener("submit", function (event) {
+            event.preventDefault();
+            const name = document.getElementById("name").value;
+            const email = document.getElementById("email").value;
+            const phone = document.getElementById("phone").value;
+
+            // Create a JavaScript object with the form data
+            const formData = {
+                name: name,
+                email: email,
+                phone: phone
+            };
+
+            // Send the data to Zapier via a webhook
+            fetch("https://hooks.zapier.com/hooks/catch/16991861/3ziqfp0/", {
+                method: "POST",
+                body: JSON.stringify(formData),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Data sent successfully, you can show a success message here
+                    alert("Lead information sent successfully!");
+                } else {
+                    // Handle errors if needed
+                    alert("Error sending lead information.");
+                }
+            });
+        });
+    </script>
+
 </body>
 </html>
